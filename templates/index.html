@@ -194,7 +194,7 @@
 									{% csrf_token %}
 									<div
 										class="d-flex flex-lg-row flex-column align-items-start justify-content-lg-between justify-content-start">
-										<input type="text" class="search_input search_input_1" placeholder="City" data
+										<input type="text" class="search_input search_input_1" placeholder="City"
 											 name="city">
 										<input type="text" class="search_input search_input_1" placeholder="Country"
 											 name="country">
@@ -302,6 +302,37 @@
 						<div class="destinations_container item_grid">
 
 							{% for dest in dests %}
+							<!-- Destination -->
+							<div class="destination item">
+								<div class="destination_image">
+									<img src="{{dest.img1}}" alt="{{dest.city}}">
+
+								</div>
+								<div class="destination_content">
+									<div class="destination_title"><a href="{% url 'destinations' country=dest.country city=dest.city %}">{{dest.city}}, {{dest.country}}</a>
+									</div>
+									<div class="destination_subtitle">
+										<p>{{dest.desc}}</p>
+									</div>
+									<div class="destination_price">From ${{dest.price}}</div>
+								</div>
+							</div>
+
+							{% endfor %}
+
+						</div>
+
+					</div>
+					<div>
+
+					</div>
+				</div>
+				<h3>Suggested Results</h3>
+				<div class="row destinations_row">
+					<div class="col">
+						<div class="destinations_container item_grid">
+
+							{% for dest in dests_suggested %}
 							<!-- Destination -->
 							<div class="destination item">
 								<div class="destination_image">

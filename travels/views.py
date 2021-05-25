@@ -138,13 +138,14 @@ def index(request):
         print("got some search", city, country, budgetmin, budgetmin)
         if country != "":
             dests = dests.filter(country__icontains=country)
+            if len(dests) == 0:
+                q = {"match": {"country":{"query": country,"fuzziness": 1,"prefix_length": 1}}}
+                dests = DestinationDocument.search().query(q)
         if city != "":
-            q = {"match": {"city":{"query": city,"fuzziness": 1,"prefix_length": 1}}}
-            dests = DestinationDocument.search().query(q)
-            for dest in dests:
-                print(dest)
-            #dests = dests.filter(city__icontains=city)
-            print("got here")
+            dests = dests.filter(city__icontains=city)
+            q = {"match": {"city":{"query": city,"fuzziness": 2,"prefix_length": 1}}}
+            dests_suggested = DestinationDocument.search().query(q)
+            #print("got here")
         if budgetmax != "":
             try:
                 budgetmax = int(budgetmax)
@@ -161,7 +162,7 @@ def index(request):
         paginator = Paginator(dests,20)
         page_obj = paginator.get_page(page_number)
         '''
-        return render(request, "index.html", {'dests':dests})
+        return render(request, "index.html", {'dests':dests, 'dests_suggested':dests_suggested})
 
 
     except Exception as e:
